@@ -52,7 +52,6 @@ function bfs() {
     let u = queue.shift();
 
     for (let v of graph.getVertexNeighbours(u)) {
-       console.log(v)
       if (graph.vertexSet[v].color == 0) {
         graph.vertexSet[v].distance = u.distance + 1;
         graph.vertexSet[v].color = 1;
@@ -64,19 +63,18 @@ function bfs() {
 }
 
 function makeGraph(graph, width, height) {
+  hor = width / 10;
+  ver = height / 10;
 
-   hor = width/10;
-   ver = height / 10;
+  for (let i = 0; i < hor; i += 10) {
+    for (let j = 0; j < ver; j += 10) {
+      let temp = (i * ver) / 10 + j;
 
-  for (let j = 0; j < hor; j+=10) {
-    for (let i = 0; i < ver; i+=10) {
-      let temp = j * hor + i;
-
-      if (i - 10 < 0) {
-        if (j - 10 < 0) {
+      if (j - 10 < 0) {
+        if (i - 10 < 0) {
           graph.addEdge(temp, temp + 10);
           graph.addEdge(temp, temp + hor);
-        } else if (j + 1 >= ver) {
+        } else if (i + 10 >= ver) {
           graph.addEdge(temp, temp + 10);
           graph.addEdge(temp, temp - hor);
         } else {
@@ -84,11 +82,11 @@ function makeGraph(graph, width, height) {
           graph.addEdge(temp, temp + hor);
           graph.addEdge(temp, temp - hor);
         }
-      } else if (i + 10 >= hor) {
-        if (j - 10 < 0) {
+      } else if (j + 10 >= hor) {
+        if (i - 10 < 0) {
           graph.addEdge(temp, temp - 10);
           graph.addEdge(temp, temp + hor);
-        } else if (j + 10 >= ver) {
+        } else if (i + 10 >= ver) {
           graph.addEdge(temp, temp - 10);
           graph.addEdge(temp, temp - hor);
         } else {
@@ -97,13 +95,13 @@ function makeGraph(graph, width, height) {
           graph.addEdge(temp, temp - hor);
         }
       } else {
-        if (j - 10 < 0) {
+        if (i - 10 < 0) {
           graph.addEdge(temp, temp - 10);
           graph.addEdge(temp, temp + 10);
           graph.addEdge(temp, temp + hor);
-        } else if (j + 10 >= ver) {
-          graph.addEdge(temp, temp - 10);
+        } else if (i + 10 >= ver) {
           graph.addEdge(temp, temp + 10);
+          graph.addEdge(temp, temp - 10);
           graph.addEdge(temp, temp - hor);
         } else {
           graph.addEdge(temp, temp + 10);
@@ -117,12 +115,13 @@ function makeGraph(graph, width, height) {
 }
 
 function draw() {
-   background(0)
-   stroke(255)
-   // strokeWeight(2)
-   for(let i=0; i<width;i+=10){
-      line(i,0,i,height)
-      line(0,i,width,i)
-   }
-   bfs();
+  background(0);
+  //   stroke(255);
+  // strokeWeight(2)
+  for (let i = 0; i < width; i += 10) {
+    for (let j = 0; j < height; j += 10) {
+      rect(i, j, 10, 10);
+    }
+  }
+  bfs();
 }
