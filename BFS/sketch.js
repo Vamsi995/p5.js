@@ -1,8 +1,10 @@
 class Vertex {
-  constructor(id) {
+  constructor(id, x, y) {
     this.id = id;
     this.color = 0;
     this.distance = 0;
+    this.x = x;
+    this.y = y;
     this.adj_vertices = {};
   }
 }
@@ -16,11 +18,11 @@ class Graph {
     this.vertexSet[id] = new Vertex(id);
   }
 
-  addEdge(u, v, weight = 0) {
+  addEdge(u, v, x, y, weight = 0) {
     if (u in this.vertexSet) {
       this.vertexSet[u].adj_vertices[v] = weight;
     } else {
-      this.vertexSet[u] = new Vertex(u);
+      this.vertexSet[u] = new Vertex(u, x, y);
       this.vertexSet[u].adj_vertices[v] = weight;
     }
   }
@@ -52,13 +54,20 @@ function bfs() {
     let u = queue.shift();
 
     for (let v of graph.getVertexNeighbours(u)) {
-      if (graph.vertexSet[v].color == 0) {
-        graph.vertexSet[v].distance = u.distance + 1;
-        graph.vertexSet[v].color = 1;
-        queue.push(graph.vertexSet[v]);
+      let vertex = graph.vertexSet[v];
+      if (vertex.color == 0) {
+        vertex.distance = u.distance + 1;
+        vertex.color = 1;
+        stroke(255, 0, 0);
+        fill(255, 0, 0);
+        rect(vertex.x, vertex.y, 10, 10);
+        queue.push(vertex);
       }
     }
     u.color = 2;
+    stroke(0);
+    fill(0);
+    rect(u.x, u.y, 10, 10);
   }
 }
 
@@ -72,42 +81,42 @@ function makeGraph(graph, width, height) {
 
       if (j - 10 < 0) {
         if (i - 10 < 0) {
-          graph.addEdge(temp, temp + 10);
-          graph.addEdge(temp, temp + hor);
+          graph.addEdge(temp, temp + 10, i, j);
+          graph.addEdge(temp, temp + hor, i, j);
         } else if (i + 10 >= ver) {
-          graph.addEdge(temp, temp + 10);
-          graph.addEdge(temp, temp - hor);
+          graph.addEdge(temp, temp + 10, i, j);
+          graph.addEdge(temp, temp - hor, i, j);
         } else {
-          graph.addEdge(temp, temp + 10);
-          graph.addEdge(temp, temp + hor);
-          graph.addEdge(temp, temp - hor);
+          graph.addEdge(temp, temp + 10, i, j);
+          graph.addEdge(temp, temp + hor, i, j);
+          graph.addEdge(temp, temp - hor, i, j);
         }
       } else if (j + 10 >= hor) {
         if (i - 10 < 0) {
-          graph.addEdge(temp, temp - 10);
-          graph.addEdge(temp, temp + hor);
+          graph.addEdge(temp, temp - 10, i, j);
+          graph.addEdge(temp, temp + hor, i, j);
         } else if (i + 10 >= ver) {
-          graph.addEdge(temp, temp - 10);
-          graph.addEdge(temp, temp - hor);
+          graph.addEdge(temp, temp - 10, i, j);
+          graph.addEdge(temp, temp - hor, i, j);
         } else {
-          graph.addEdge(temp, temp - 10);
-          graph.addEdge(temp, temp + hor);
-          graph.addEdge(temp, temp - hor);
+          graph.addEdge(temp, temp - 10, i, j);
+          graph.addEdge(temp, temp + hor, i, j);
+          graph.addEdge(temp, temp - hor, i, j);
         }
       } else {
         if (i - 10 < 0) {
-          graph.addEdge(temp, temp - 10);
-          graph.addEdge(temp, temp + 10);
-          graph.addEdge(temp, temp + hor);
+          graph.addEdge(temp, temp - 10, i, j);
+          graph.addEdge(temp, temp + 10, i, j);
+          graph.addEdge(temp, temp + hor, i, j);
         } else if (i + 10 >= ver) {
-          graph.addEdge(temp, temp + 10);
-          graph.addEdge(temp, temp - 10);
-          graph.addEdge(temp, temp - hor);
+          graph.addEdge(temp, temp + 10, i, j);
+          graph.addEdge(temp, temp - 10, i, j);
+          graph.addEdge(temp, temp - hor, i, j);
         } else {
-          graph.addEdge(temp, temp + 10);
-          graph.addEdge(temp, temp + hor);
-          graph.addEdge(temp, temp - hor);
-          graph.addEdge(temp, temp - 10);
+          graph.addEdge(temp, temp + 10, i, j);
+          graph.addEdge(temp, temp + hor, i, j);
+          graph.addEdge(temp, temp - hor, i, j);
+          graph.addEdge(temp, temp - 10, i, j);
         }
       }
     }
@@ -115,13 +124,34 @@ function makeGraph(graph, width, height) {
 }
 
 function draw() {
-  background(0);
+  background(255);
   //   stroke(255);
-  // strokeWeight(2)
-  for (let i = 0; i < width; i += 10) {
-    for (let j = 0; j < height; j += 10) {
-      rect(i, j, 10, 10);
+  strokeWeight(2)
+    for (let i = 0; i < width; i += 10) {
+      for (let j = 0; j < height; j += 10) {
+        rect(i, j, 10, 10);
+      }
     }
-  }
-  bfs();
+  //   bfs();
+  if (queue.length != 0) {
+     let u = queue.shift();
+     
+     for (let v of graph.getVertexNeighbours(u)) {
+        let vertex = graph.vertexSet[v];
+        if (vertex.color == 0) {
+           vertex.distance = u.distance + 1;
+           vertex.color = 1;
+           stroke(255, 0, 0);
+           fill(255, 0, 0);
+           rect(vertex.x, vertex.y, 10, 10);
+           queue.push(vertex);
+         }
+      }
+      u.color = 2;
+      //  stroke(0);
+       fill(0);
+       rect(u.x, u.y, 10, 10);
+   }
+   
+     frameRate(1)
 }
