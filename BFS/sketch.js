@@ -34,6 +34,7 @@ class Graph {
 
 var queue = [];
 var graph = new Graph();
+var boxWidth = 20
 
 function setup() {
   const height = 600;
@@ -60,63 +61,63 @@ function bfs() {
         vertex.color = 1;
         stroke(255, 0, 0);
         fill(255, 0, 0);
-        rect(vertex.x, vertex.y, 10, 10);
+        rect(vertex.x, vertex.y, boxWidth, boxWidth);
         queue.push(vertex);
       }
     }
     u.color = 2;
     stroke(0);
     fill(0);
-    rect(u.x, u.y, 10, 10);
+    rect(u.x, u.y, boxWidth, boxWidth);
   }
 }
 
 function makeGraph(graph, width, height) {
-  hor = width / 10;
-  ver = height / 10;
+  hor = width;
+  ver = height;
 
-  for (let i = 0; i < hor; i += 10) {
-    for (let j = 0; j < ver; j += 10) {
-      let temp = (i * ver) / 10 + j;
+  for (let i = 0; i < hor; i += boxWidth) {
+    for (let j = 0; j < ver; j += boxWidth) {
+      let temp = (i * ver) / boxWidth + j;
 
-      if (j - 10 < 0) {
-        if (i - 10 < 0) {
-          graph.addEdge(temp, temp + 10, i, j);
+      if (j - boxWidth < 0) {
+        if (i - boxWidth < 0) {
+          graph.addEdge(temp, temp + boxWidth, i, j);
           graph.addEdge(temp, temp + hor, i, j);
-        } else if (i + 10 >= ver) {
-          graph.addEdge(temp, temp + 10, i, j);
+        } else if (i + boxWidth >= ver) {
+          graph.addEdge(temp, temp + boxWidth, i, j);
           graph.addEdge(temp, temp - hor, i, j);
         } else {
-          graph.addEdge(temp, temp + 10, i, j);
+          graph.addEdge(temp, temp + boxWidth, i, j);
           graph.addEdge(temp, temp + hor, i, j);
           graph.addEdge(temp, temp - hor, i, j);
         }
-      } else if (j + 10 >= hor) {
-        if (i - 10 < 0) {
-          graph.addEdge(temp, temp - 10, i, j);
+      } else if (j + boxWidth >= hor) {
+        if (i - boxWidth < 0) {
+          graph.addEdge(temp, temp - boxWidth, i, j);
           graph.addEdge(temp, temp + hor, i, j);
-        } else if (i + 10 >= ver) {
-          graph.addEdge(temp, temp - 10, i, j);
+        } else if (i + boxWidth >= ver) {
+          graph.addEdge(temp, temp - boxWidth, i, j);
           graph.addEdge(temp, temp - hor, i, j);
         } else {
-          graph.addEdge(temp, temp - 10, i, j);
+          graph.addEdge(temp, temp - boxWidth, i, j);
           graph.addEdge(temp, temp + hor, i, j);
           graph.addEdge(temp, temp - hor, i, j);
         }
       } else {
-        if (i - 10 < 0) {
-          graph.addEdge(temp, temp - 10, i, j);
-          graph.addEdge(temp, temp + 10, i, j);
+        if (i - boxWidth < 0) {
+          graph.addEdge(temp, temp - boxWidth, i, j);
+          graph.addEdge(temp, temp + boxWidth, i, j);
           graph.addEdge(temp, temp + hor, i, j);
-        } else if (i + 10 >= ver) {
-          graph.addEdge(temp, temp + 10, i, j);
-          graph.addEdge(temp, temp - 10, i, j);
+        } else if (i + boxWidth >= ver) {
+          graph.addEdge(temp, temp + boxWidth, i, j);
+          graph.addEdge(temp, temp - boxWidth, i, j);
           graph.addEdge(temp, temp - hor, i, j);
         } else {
-          graph.addEdge(temp, temp + 10, i, j);
+          graph.addEdge(temp, temp + boxWidth, i, j);
           graph.addEdge(temp, temp + hor, i, j);
           graph.addEdge(temp, temp - hor, i, j);
-          graph.addEdge(temp, temp - 10, i, j);
+          graph.addEdge(temp, temp - boxWidth, i, j);
         }
       }
     }
@@ -124,15 +125,17 @@ function makeGraph(graph, width, height) {
 }
 
 function draw() {
-  background(255);
-  //   stroke(255);
-  strokeWeight(2)
-    for (let i = 0; i < width; i += 10) {
-      for (let j = 0; j < height; j += 10) {
-        rect(i, j, 10, 10);
-      }
+  // background(255);
+    stroke(0);
+    // fill(255);
+  // strokeWeight(2)
+    for (let i = 0; i < width; i += boxWidth) {
+      // for (let j = 0; j < height; j += boxWidth) {
+        // rect(i, j, boxWidth, boxWidth);
+        line(i,0,i,height)
+        line(0,i,width,i);
+      // }
     }
-  //   bfs();
   if (queue.length != 0) {
      let u = queue.shift();
      
@@ -141,17 +144,20 @@ function draw() {
         if (vertex.color == 0) {
            vertex.distance = u.distance + 1;
            vertex.color = 1;
-           stroke(255, 0, 0);
-           fill(255, 0, 0);
-           rect(vertex.x, vertex.y, 10, 10);
+          //  fill(255, 0, 0);
+          //  rect(vertex.x, vertex.y, boxWidth, boxWidth);
            queue.push(vertex);
          }
       }
       u.color = 2;
       //  stroke(0);
        fill(0);
-       rect(u.x, u.y, 10, 10);
+       rect(u.x, u.y, boxWidth, boxWidth);
+       fill(255)
+       textSize(9)
+       textAlign(CENTER,CENTER)
+       text(String(u.distance),u.x+boxWidth/2,u.y+boxWidth/2)
+
    }
    
-     frameRate(1)
 }
