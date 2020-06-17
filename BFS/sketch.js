@@ -34,13 +34,13 @@ class Graph {
 
 var queue = [];
 var graph = new Graph();
-var boxWidth = 20
+var boxWidth = 60;
+const height = 600;
+const width = 600;
+var source;
+var destination;
 
 function setup() {
-  const height = 600;
-  const width = 600;
-  var source;
-  var destination;
   createCanvas(height, width);
 
   makeGraph(graph, width, height);
@@ -125,39 +125,39 @@ function makeGraph(graph, width, height) {
 }
 
 function draw() {
-  // background(255);
-    stroke(0);
-    // fill(255);
-  // strokeWeight(2)
-    for (let i = 0; i < width; i += boxWidth) {
-      // for (let j = 0; j < height; j += boxWidth) {
-        // rect(i, j, boxWidth, boxWidth);
-        line(i,0,i,height)
-        line(0,i,width,i);
-      // }
-    }
-  if (queue.length != 0) {
-     let u = queue.shift();
-     
-     for (let v of graph.getVertexNeighbours(u)) {
-        let vertex = graph.vertexSet[v];
-        if (vertex.color == 0) {
-           vertex.distance = u.distance + 1;
-           vertex.color = 1;
-          //  fill(255, 0, 0);
-          //  rect(vertex.x, vertex.y, boxWidth, boxWidth);
-           queue.push(vertex);
-         }
-      }
-      u.color = 2;
-      //  stroke(0);
-       fill(0);
-       rect(u.x, u.y, boxWidth, boxWidth);
-       fill(255)
-       textSize(9)
-       textAlign(CENTER,CENTER)
-       text(String(u.distance),u.x+boxWidth/2,u.y+boxWidth/2)
+  stroke(0);
+  fill(255);
 
-   }
-   
+  for (let i = 0; i < height; i += boxWidth) {
+    line(i, 0, i, height);
+    line(0, i, width, i);
+    for (let j = 0; j < width; j += boxWidth) {
+      let temp = (i * width) / boxWidth + j;
+
+      text(String(temp / 60), j + 10, i + 10);
+    }
+  }
+  if (queue.length != 0) {
+    let u = queue.shift();
+
+    for (let v of graph.getVertexNeighbours(u)) {
+      let vertex = graph.vertexSet[v];
+      if (vertex.color == 0) {
+        vertex.distance = u.distance + 1;
+        vertex.color = 1;
+        fill(100);
+        rect(vertex.x, vertex.y, boxWidth, boxWidth);
+        queue.push(vertex);
+      }
+    }
+    u.color = 2;
+    //  stroke(0);
+    fill(0);
+    rect(u.x, u.y, boxWidth, boxWidth);
+    fill(255);
+    textSize(9);
+    textAlign(CENTER, CENTER);
+    text(String(u.distance), u.x + boxWidth / 2, u.y + boxWidth / 2);
+  }
+  frameRate(20);
 }

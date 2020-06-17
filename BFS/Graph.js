@@ -3,6 +3,7 @@ class Vertex {
     this.id = id;
     this.color = 0;
     this.distance = 0;
+    this.blocked = false
     this.adj_vertices = {};
   }
 }
