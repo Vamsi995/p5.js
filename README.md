@@ -25,4 +25,4 @@ git clone [repolink]
 
 ## Libraries Used
 
-* [p5.js](https://p5js.org/) - The web framework used
+* [p5.js](https://p5js.org/) - Sketching library
