@@ -20,7 +20,7 @@ A step by step series of examples that tell you how to get a development env run
 ```
 git clone [repolink]
 ```
-- Download the live server extension on Vs-code
+- Download the live server extension on Vs-code. [Live Server Extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 - Run the live server and choose which project to open
 
 ## Libraries Used
